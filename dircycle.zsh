@@ -36,8 +36,8 @@ _dircycle_insert_cycled_right() {
 
 zle -N _dircycle_insert_cycled_right
 
-# Ctrl+Shift+Left (previous)
+# Ctrl+Shift+Left (backwards)
 bindkey "\e[1;6D" _dircycle_insert_cycled_left
 
-# Ctrl+Shift+Right (next)
+# Ctrl+Shift+Right (forwards)
 bindkey "\e[1;6C" _dircycle_insert_cycled_right
