@@ -1,13 +1,12 @@
 # zsh-dircycle
 > Cycle through the directory stack
 
-## Overview
 Cycle through the directory stack with `Ctrl + Shift + Left/Right`. Direction follows the order in which directories were visited, like left/right arrows do in a browser.
 
 ## Installation
 
-### Plugin Manager
-You can use the [Zsh plugin manager](https://github.com/search?o=desc&q=zsh+plugin+manager&s=stars&type=Repositories&utf8=%E2%9C%93) of your choice to install `zsh-dircycle`.  For example, if you're using [Antigen](https://github.com/zsh-users/antigen), add `antigen bundle michaelxmcbride/zsh-dircycle` to your `~/.zshrc` file.
+### Framework
+You can use the [Zsh framework](https://github.com/unixorn/awesome-zsh-plugins#frameworks) of your choice to install `zsh-dircycle`.  For example, if you're using [Antigen](https://github.com/zsh-users/antigen), add `antigen bundle michaelxmcbride/zsh-dircycle` to your `~/.zshrc` file.  Generic installation instructions for additional frameworks can be found [here](https://github.com/unixorn/awesome-zsh-plugins#installation).
 
 ### Manual
 1. Clone, download, or add this repository as a Git submodule
