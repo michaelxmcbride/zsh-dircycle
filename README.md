@@ -1,7 +1,7 @@
 # zsh-dircycle
 > Cycle through the directory stack
 
-Cycle through the directory stack with `Ctrl + Shift + Left/Right`. Direction follows the order in which directories were visited, like left/right arrows do in a browser.
+Cycle through the directory stack (i.e. a list of recently-visited directories) with `Ctrl + Shift + Left/Right`. Direction follows the order in which directories were visited, like left/right arrows do in a browser.
 
 ## Installation
 
