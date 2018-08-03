@@ -1,6 +1,7 @@
-# Cycle through the directory stack with Ctrl+Shift+Left/Right. Direction follows
-# the order in which directories were visited, like left/right arrows do in a
-# browser.
+# Cycle through the directory stack (i.e. a list of recently-visited directories) 
+# with `Ctrl + Shift + Left` and `Ctrl + Shift + Right`. The direction follows the
+# order in which the directories were visited, like the left and right arrows do
+# in a web browser.
 
 _dircycle_update_cycled() {
     setopt localoptions nopushdminus
@@ -8,15 +9,15 @@ _dircycle_update_cycled() {
     [[ ${#dirstack} -eq 0 ]] && return
 
     while ! builtin pushd -q $1 &>/dev/null; do
-        # A missing directory was found: pop it out of the dir stack
+        # A missing directory was found; pop it out of the directory stack.
         builtin popd -q $1
 
-        # Stop trying if there are no more directories in the dir stack
+        # Stop trying if there are no more directories in the directory stack.
         [[ ${#dirstack} -eq 0 ]] && break
     done
-
+    
+    # Trigger a prompt update if using Pure (https://github.com/sindresorhus/pure).
     if typeset -f prompt_pure_setup > /dev/null; then
-        # Trigger a prompt update if using Pure (https://github.com/sindresorhus/pure)
         prompt_pure_async_tasks
         prompt_pure_preprompt_render
     else
@@ -36,8 +37,8 @@ _dircycle_insert_cycled_right() {
 
 zle -N _dircycle_insert_cycled_right
 
-# Ctrl+Shift+Left (backwards)
+# Ctrl + Shift + Left (Backwards)
 bindkey "\e[1;6D" _dircycle_insert_cycled_left
 
-# Ctrl+Shift+Right (forwards)
+# Ctrl + Shift + Right (Forwards)
 bindkey "\e[1;6C" _dircycle_insert_cycled_right
