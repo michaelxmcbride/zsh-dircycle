@@ -1,7 +1,4 @@
-# Cycle through the directory stack (i.e. a list of recently-visited directories) 
-# with `Ctrl + Shift + Left` and `Ctrl + Shift + Right`. The direction follows the
-# order in which the directories were visited, like the left and right arrows do
-# in a web browser.
+# A Zsh plugin for cycling through the directory stack.
 
 _dircycle_update_cycled() {
     setopt localoptions nopushdminus
@@ -37,8 +34,8 @@ _dircycle_insert_cycled_right() {
 
 zle -N _dircycle_insert_cycled_right
 
-# Ctrl + Shift + Left (Backwards)
+# Bind Ctrl + Shift + Left key combination to backwards direction.
 bindkey "\e[1;6D" _dircycle_insert_cycled_left
 
-# Ctrl + Shift + Right (Forwards)
+# Bind Ctrl + Shift + Right key combination to forwards direction.
 bindkey "\e[1;6C" _dircycle_insert_cycled_right
