@@ -1,0 +1,37 @@
+#!/usr/bin/env zunit
+
+@setup {
+    load "_support/setup.zsh"
+    load "${base_directory_path}/dircycle.plugin.zsh"
+}
+
+@teardown {
+    load "${support_directory_path}/teardown.zsh"
+}
+
+@test 'dircycle.plugin.zsh: Loads functions from dircycle.zsh' {
+    function_exists _dircycle_update_cycled
+    assert $state equals 0
+
+    function_exists _dircycle_insert_cycled_left
+    assert $state equals 0
+
+    function_exists _dircycle_insert_cycled_right
+    assert $state equals 0
+}
+
+@test 'dircycle.plugin.zsh: Loads key bindings from dircycle.zsh' {
+    key_binding_exists "^[[1;6C" "_dircycle_insert_cycled_right"
+    assert $state equals 0
+
+    key_binding_exists "^[[1;6D" "_dircycle_insert_cycled_left"
+    assert $state equals 0
+}
+
+@test 'dircycle.plugin.zsh: Loads ZLE user-defined widgets from dircycle.zsh' {
+    zle_user_defined_widget_exists "_dircycle_insert_cycled_right"
+    assert $state equals 0
+
+    zle_user_defined_widget_exists "_dircycle_insert_cycled_left"
+    assert $state equals 0
+}
