@@ -1,0 +1,100 @@
+#!/usr/bin/env zunit
+
+@setup {
+    load "_support/setup.zsh"
+    load "${base_directory_path}/dircycle.zsh"
+}
+
+@teardown {
+    load "${support_directory_path}/teardown.zsh"
+}
+
+@test 'dircycle.zsh: _dircycle_update_cycled: Cycles through the directory stack' {
+    cd "${fixtures_directory_path}/4/4"
+    cd "${fixtures_directory_path}/3"
+    cd "${fixtures_directory_path}/1"
+
+    assert "$PWD" same_as "${fixtures_directory_path}/1"
+
+    _dircycle_update_cycled +1 || true
+
+    assert $state equals 0
+    assert "$PWD" same_as "${fixtures_directory_path}/3"
+
+    _dircycle_update_cycled -0 || true
+
+    assert $state equals 0
+    assert "$PWD" same_as "${fixtures_directory_path}/1"
+
+    rm -rf "${fixtures_directory_path}/3"
+    _dircycle_update_cycled +1 || true
+
+    assert $state equals 0
+    assert "$PWD" same_as "${fixtures_directory_path}/4/4"
+}
+
+@test 'dircycle.zsh: _dircycle_insert_cycled_left: Cycles backward through the directory stack' {
+    cd "${fixtures_directory_path}/4/4"
+    cd "${fixtures_directory_path}/3"
+    cd "${fixtures_directory_path}/1"
+
+    assert "$PWD" same_as "${fixtures_directory_path}/1"
+
+    _dircycle_insert_cycled_left
+
+    assert $state equals 0
+    assert "$PWD" same_as "${fixtures_directory_path}/3"
+
+    _dircycle_insert_cycled_left
+    _dircycle_insert_cycled_left
+
+    assert $state equals 0
+    assert "$PWD" same_as "$base_directory_path"
+
+    rm -rf "${fixtures_directory_path}/1"
+    _dircycle_insert_cycled_left
+
+    assert $state equals 0
+    assert "$PWD" same_as "${fixtures_directory_path}/3"
+}
+
+@test 'dircycle.zsh: _dircycle_insert_cycled_right: Cycles forward through the directory stack' {
+    cd "${fixtures_directory_path}/4/4"
+    cd "${fixtures_directory_path}/3"
+    cd "${fixtures_directory_path}/1"
+
+    assert "$PWD" same_as "${fixtures_directory_path}/1"
+
+    _dircycle_insert_cycled_right
+
+    assert $state equals 0
+    assert "$PWD" same_as "$base_directory_path"
+
+    _dircycle_insert_cycled_right
+    _dircycle_insert_cycled_right
+
+    assert $state equals 0
+    assert "$PWD" same_as "${fixtures_directory_path}/3"
+
+    rm -rf "${fixtures_directory_path}/1"
+    _dircycle_insert_cycled_right
+
+    assert $state equals 0
+    assert "$PWD" same_as "$base_directory_path"
+}
+
+@test 'dircycle.zsh: Creates ZLE user-defined widgets' {
+    zle_user_defined_widget_exists "_dircycle_insert_cycled_right"
+    assert $state equals 0
+
+    zle_user_defined_widget_exists "_dircycle_insert_cycled_left"
+    assert $state equals 0
+}
+
+@test 'dircycle.zsh: Creates key bindings' {
+    key_binding_exists "^[[1;6C" "_dircycle_insert_cycled_right"
+    assert $state equals 0
+
+    key_binding_exists "^[[1;6D" "_dircycle_insert_cycled_left"
+    assert $state equals 0
+}
