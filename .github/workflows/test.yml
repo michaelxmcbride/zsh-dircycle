@@ -39,7 +39,7 @@ jobs:
       uses: actions/checkout@v1
     
     - name: Install Linux-specific dependencies
-      if: runner.os == "Linux"
+      if: runner.os == 'Linux'
       run: |
         apt-get update && \
         apt-get install \
