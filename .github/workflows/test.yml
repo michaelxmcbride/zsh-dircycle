@@ -51,5 +51,5 @@ jobs:
     
     - name: Run tests
       run: |
-        cd "/usr/local/src/zsh-dircycle"
+        cd /usr/local/src/zsh-dircycle
         zunit
