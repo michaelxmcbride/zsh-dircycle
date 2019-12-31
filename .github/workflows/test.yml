@@ -41,8 +41,8 @@ jobs:
     - name: Install Linux-specific dependencies
       if: runner.os == 'Linux'
       run: |
-        apt-get update && \
-        apt-get install \
+        sudo apt-get update && \
+        sudo apt-get install \
           autoconf \
           ncurses-dev \
           yodl \
