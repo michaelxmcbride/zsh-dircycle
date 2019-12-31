@@ -11,13 +11,12 @@ on:
 
 jobs:
   test:
-    name: Test on Zsh ${{ matrix.zsh-version }} and ${{ matrix.os }}
+    name: Test Zsh ${{ matrix.zsh-version }}
     runs-on: ${{ matrix.os }}
     
     strategy:
       matrix:
         os:
-        - macOS-latest
         - ubuntu-latest
 
         zsh-version:
@@ -31,39 +30,25 @@ jobs:
         - "5.6.2"
         - "5.7.1" 
     
-    env:
-      TERM: xterm-256color
-      ZVM_ZSH_VERSION: ${{ matrix.zsh-version }}
+    container:
+      image: zshusers/zsh:${{ matrix.zsh-version }}
+      env:
+        TERM: xterm-256color
+      volumes:
+      - .:/usr/local/src/zsh-dircycle 
 
     steps:
-    - name: Check out Git repository
+    - name: Check out source
       uses: actions/checkout@v1
     
-    - name: Install Linux-specific dependencies
-      if: runner.os == 'Linux'
+    - name: Install dependencies
       run: |
-        sudo apt-get --yes update && \
-        sudo apt-get --yes install \
-          autoconf \
-          ncurses-dev \
-          yodl \
-          zsh
-    
-    - name: Install common dependencies
-      run: |
-        mkdir -p "${HOME}/bin"
-        curl --location "https://raw.githubusercontent.com/molovo/color/master/color.zsh" > "${HOME}/bin/color"
-        curl --location "https://raw.githubusercontent.com/molovo/revolver/v0.2.4/revolver" > "${HOME}/bin/revolver"
-        curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "${HOME}/bin/zunit"
-        curl --location "https://raw.githubusercontent.com/molovo/zvm/v0.2.1/zvm" > "${HOME}/bin/zvm"
-        chmod u+x "${HOME}/bin/"{color,revolver,zunit,zvm}
-    
-    - name: Use Zsh ${{ matrix.zsh-version }}
-      run: |
-        export PATH="${HOME}/.zvm/bin:${HOME}/bin:${PATH}"
-        zvm use "$ZVM_ZSH_VERSION"
+        apt-get --yes update && \
+        apt-get --yes install curl
+        curl --location "https://raw.githubusercontent.com/molovo/revolver/v0.2.4/revolver" > "/usr/local/bin/revolver"
+        curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "/usr/local/bin/zunit"
+        chmod +x /usr/local/bin/{revolver,zunit}
     
     - name: Run tests
-      run: |
-        export PATH="${HOME}/.zvm/bin:${HOME}/bin:${PATH}"
-        zunit
+      run: zunit
+      working-directory: /usr/local/src/zsh-dircycle
