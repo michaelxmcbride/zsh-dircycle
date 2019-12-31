@@ -47,7 +47,7 @@ jobs:
         apt-get --yes install curl
         curl --location "https://raw.githubusercontent.com/molovo/revolver/v0.2.4/revolver" > "/usr/local/bin/revolver"
         curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "/usr/local/bin/zunit"
-        chmod +x /usr/local/bin/{revolver,zunit}
+        chmod +x /usr/local/bin/*
     
     - name: Run tests
       run: zunit
