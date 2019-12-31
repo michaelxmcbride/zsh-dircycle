@@ -1,0 +1,65 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+    - master
+  
+  push:
+    branches:
+    - master
+
+jobs:
+  test:
+    name: Test on Zsh ${{ matrix.zsh-version }} and ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os:
+        - macOS-latest
+        - ubuntu-latest
+
+        zsh-version:
+        - "4.3.17" 
+        - "5.0.8"
+        - "5.1.1" 
+        - "5.2" 
+        - "5.3.1" 
+        - "5.4.2"
+        - "5.5.1"
+        - "5.6.2"
+        - "5.7.1" 
+    
+    env:
+      ZVM_ZSH_VERSION: ${{ matrix.zsh-version }}
+
+    steps:
+    - name: Check out Git repository
+      uses: actions/checkout@v1
+    
+    - name: Install Linux-specific dependencies
+      if: runner.os == "Linux"
+      run: |
+        apt-get update && \
+        apt-get install \
+          autoconf \
+          ncurses-dev \
+          yodl \
+          zsh
+    
+    - name: Install common dependencies
+      run: |
+        mkdir -p "${HOME}/bin"
+        curl --location "https://raw.githubusercontent.com/molovo/color/master/color.zsh > "${HOME}/bin/color"
+        curl --location "https://raw.githubusercontent.com/molovo/revolver/v0.2.4/revolver" > "${HOME}/bin/revolver"
+        curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "${HOME}/bin/zunit"
+        curl --location "https://raw.githubusercontent.com/molovo/zvm/v0.2.1/zvm" > "${HOME}/bin/zvm"
+        chmod u+x "${HOME}/bin/"{color,revolver,zunit,zvm}
+        export PATH="${HOME}/.zvm/bin:${HOME}/bin:${PATH}"
+    
+    - name: Use Zsh ${{ matrix.zsh-version }}
+      run: zvm use "$ZVM_ZSH_VERSION"
+    
+    - name: Run tests
+      run: zunit
