@@ -41,8 +41,8 @@ jobs:
     - name: Install Linux-specific dependencies
       if: runner.os == 'Linux'
       run: |
-        sudo apt-get update && \
-        sudo apt-get install \
+        sudo apt-get --yes update && \
+        sudo apt-get --yes install \
           autoconf \
           ncurses-dev \
           yodl \
@@ -51,7 +51,7 @@ jobs:
     - name: Install common dependencies
       run: |
         mkdir -p "${HOME}/bin"
-        curl --location "https://raw.githubusercontent.com/molovo/color/master/color.zsh > "${HOME}/bin/color"
+        curl --location "https://raw.githubusercontent.com/molovo/color/master/color.zsh" > "${HOME}/bin/color"
         curl --location "https://raw.githubusercontent.com/molovo/revolver/v0.2.4/revolver" > "${HOME}/bin/revolver"
         curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "${HOME}/bin/zunit"
         curl --location "https://raw.githubusercontent.com/molovo/zvm/v0.2.1/zvm" > "${HOME}/bin/zvm"
