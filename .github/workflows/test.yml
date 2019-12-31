@@ -34,8 +34,6 @@ jobs:
       image: zshusers/zsh:${{ matrix.zsh-version }}
       env:
         TERM: xterm-256color
-      volumes:
-      - .:/usr/local/src/zsh-dircycle 
 
     steps:
     - name: Check out source
@@ -50,5 +48,4 @@ jobs:
         chmod +x /usr/local/bin/*
     
     - name: Run tests
-      run: |
-        zunit
+      run: zunit
