@@ -32,7 +32,6 @@ jobs:
         - "5.7.1" 
     
     env:
-      PATH: ${HOME}/.zvm/bin:${HOME}/bin:${PATH}
       ZVM_ZSH_VERSION: ${{ matrix.zsh-version }}
 
     steps:
@@ -59,7 +58,11 @@ jobs:
         chmod u+x "${HOME}/bin/"{color,revolver,zunit,zvm}
     
     - name: Use Zsh ${{ matrix.zsh-version }}
-      run: zvm use "$ZVM_ZSH_VERSION"
+      run: |
+        export PATH="${HOME}/.zvm/bin:${HOME}/bin:${PATH}"
+        zvm use "$ZVM_ZSH_VERSION"
     
     - name: Run tests
-      run: zunit
+      run: |
+        export PATH="${HOME}/.zvm/bin:${HOME}/bin:${PATH}"
+        zunit
