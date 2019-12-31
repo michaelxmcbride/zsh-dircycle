@@ -32,6 +32,7 @@ jobs:
         - "5.7.1" 
     
     env:
+      PATH: ${HOME}/.zvm/bin:${HOME}/bin:${PATH}
       ZVM_ZSH_VERSION: ${{ matrix.zsh-version }}
 
     steps:
@@ -56,7 +57,6 @@ jobs:
         curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "${HOME}/bin/zunit"
         curl --location "https://raw.githubusercontent.com/molovo/zvm/v0.2.1/zvm" > "${HOME}/bin/zvm"
         chmod u+x "${HOME}/bin/"{color,revolver,zunit,zvm}
-        export PATH="${HOME}/.zvm/bin:${HOME}/bin:${PATH}"
     
     - name: Use Zsh ${{ matrix.zsh-version }}
       run: zvm use "$ZVM_ZSH_VERSION"
