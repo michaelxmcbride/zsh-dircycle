@@ -1,0 +1,51 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+    - master
+  
+  push:
+    branches:
+    - master
+
+jobs:
+  test:
+    name: Test Zsh ${{ matrix.zsh-version }}
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+
+        zsh-version:
+        - "4.3.17"
+        - "5.0.8"
+        # - "5.1.1" 
+        # - "5.2" 
+        # - "5.3.1"
+        # - "5.4.2"
+        - "5.5.1"
+        - "5.6.2"
+        - "5.7.1" 
+    
+    container:
+      image: zshusers/zsh:${{ matrix.zsh-version }}
+      env:
+        TERM: xterm-256color
+
+    steps:
+    - name: Check out source
+      uses: actions/checkout@v1
+    
+    - name: Install dependencies
+      run: |
+        apt-get --yes update && \
+        apt-get --yes install curl ncurses-bin
+        curl --location "https://raw.githubusercontent.com/molovo/revolver/v0.2.4/revolver" > "/usr/local/bin/revolver"
+        curl --location "https://github.com/molovo/zunit/releases/download/v0.8.2/zunit" > "/usr/local/bin/zunit"
+        chmod +x /usr/local/bin/*
+    
+    - name: Run tests
+      run: zunit
