@@ -50,5 +50,6 @@ jobs:
         chmod +x /usr/local/bin/*
     
     - name: Run tests
-      run: zunit
-      working-directory: /usr/local/src/zsh-dircycle
+      run: |
+        cd "/usr/local/src/zsh-dircycle"
+        zunit
