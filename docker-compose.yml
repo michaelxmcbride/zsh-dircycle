@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  development:
+    build:
+      context: .
+    volumes:
+    - .:/usr/local/src/zsh-dircycle
